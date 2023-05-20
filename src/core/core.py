@@ -1,4 +1,5 @@
-from . import crypt #crypt method(changable)
+from . import crypt 
+#crypt method(changable)
 
 class File:
     def __init__(self, file_in: str) -> None:
@@ -16,7 +17,7 @@ class File:
             pass #todo: vizhener crypt
         else:
             pass
-        
+
     def encrypt(self, method: str, key: int) -> None:
         if method == "csr":
             encrypted_data = crypt.encrypt_csrch(self.file_data, key)
