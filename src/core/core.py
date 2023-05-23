@@ -1,4 +1,7 @@
-from . import crypt 
+import random
+import string
+
+from . import crypt
 #crypt method(changable)
 
 class File:
@@ -8,23 +11,33 @@ class File:
             self.file_data = f.read()
         self.file_name = file_in
     
-    def crypt(self, method: str, key: int) -> None:
+    def encrypt(self, method: str, key: str) -> None:
         if method == "csr":
-            crypted_data = crypt.crypt_csrch(self.file_data, key)
-            with open(self.file_out, "w") as f:
-                f.write(crypted_data)
-        elif method == "vzr":
-            pass #todo: vizhener crypt
-        else:
-            pass
-
-    def encrypt(self, method: str, key: int) -> None:
-        if method == "csr":
-            encrypted_data = crypt.encrypt_csrch(self.file_data, key)
+            encrypted_data = crypt.encrypt_csrch(self.file_data, int(key))
+            #creating keystring to decrypt message in future
+            keystring = "".join([random.choice(string.ascii_lowercase) for i in range(int(key))])
+            encrypted_data += f"\n{keystring}"
             with open(self.file_out, "w") as f:
                 f.write(encrypted_data)
         elif method == "vzr":
-            pass #todo: vizhener encrypt
+            encrypted_data = crypt.encrypt_vzrch(self.file_data, key)
+            #creating keystring to decrypt message in future
+            keystring = key
+            encrypted_data += f"\n{keystring}"
+            with open(self.file_out, "w") as f:
+                f.write(encrypted_data)
+        else:
+            pass
+
+    def decrypt(self, method: str, key: int) -> None:
+        if method == "csr":
+            decrypted_data = crypt.decrypt_csrch(self.file_data, int(key))
+            with open(self.file_out, "w") as f:
+                f.write(decrypted_data)
+        elif method == "vzr":
+            decrypted_data = crypt.decrypt_vzrch(self.file_data, key)
+            with open(self.file_out, "w") as f:
+                f.write(decrypted_data)
         else:
             pass
 
